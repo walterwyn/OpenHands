@@ -22,6 +22,7 @@ class AgentConfig(BaseModel):
         condenser: Configuration for the memory condenser. Default is NoOpCondenserConfig.
         enable_history_truncation: Whether history should be truncated to continue the session when hitting LLM context length limit.
         enable_som_visual_browsing: Whether to enable SoM (Set of Marks) visual browsing. Default is False.
+        github_action_token: The GitHub token to use for the GitHubActionAgent.
     """
 
     llm_config: str | None = Field(default=None)
@@ -35,6 +36,7 @@ class AgentConfig(BaseModel):
     enable_history_truncation: bool = Field(default=True)
     enable_som_visual_browsing: bool = Field(default=False)
     condenser: CondenserConfig = Field(default_factory=NoOpCondenserConfig)
+    github_action_token: str | None = Field(default=None)
 
     model_config = {'extra': 'forbid'}
 
@@ -99,3 +101,25 @@ class AgentConfig(BaseModel):
                 continue
 
         return agent_mapping
+
+
+def get_agent_class(agent_name: str):
+    from openhands.agenthub import (
+        codeact_agent,
+        delegator_agent,
+        dummy_agent,
+        browsing_agent,
+        visualbrowsing_agent,
+        github_action_agent,
+    )
+
+    agent_classes = {
+        "CodeActAgent": codeact_agent.CodeActAgent,
+        "DelegatorAgent": delegator_agent.DelegatorAgent,
+        "DummyAgent": dummy_agent.DummyAgent,
+        "BrowsingAgent": browsing_agent.BrowsingAgent,
+        "VisualBrowsingAgent": visualbrowsing_agent.VisualBrowsingAgent,
+        "GitHubActionAgent": github_action_agent.GitHubActionAgent,
+    }
+
+    return agent_classes.get(agent_name)
