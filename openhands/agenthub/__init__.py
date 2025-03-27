@@ -13,6 +13,7 @@ from openhands.agenthub import (  # noqa: E402
     delegator_agent,
     dummy_agent,
     visualbrowsing_agent,
+    github_action_agent,  # Import the GitHubActionAgent class
 )
 
 __all__ = [
@@ -21,6 +22,7 @@ __all__ = [
     'dummy_agent',
     'browsing_agent',
     'visualbrowsing_agent',
+    'github_action_agent',  # Add the GitHubActionAgent to the list of available agents
 ]
 
 for agent in all_microagents.values():

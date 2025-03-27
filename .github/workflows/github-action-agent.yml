@@ -1,0 +1,25 @@
+name: GitHub Action Agent
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          poetry install
+
+      - name: Run GitHub Action Agent
+        run: |
+          poetry run python -m openhands.agenthub.github_action_agent
